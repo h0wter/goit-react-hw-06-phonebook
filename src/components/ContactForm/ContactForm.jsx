@@ -1,13 +1,32 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
 import { Formik, Field } from 'formik';
 import { Box } from 'components/Box';
-import PropTypes from 'prop-types';
 import { StyledForm } from './ContactForm.styled';
 import { Button } from 'components/Button/Button';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+
+  const onSubmit = (name, number) => {
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+
+    dispatch(addContact({ name, number, id: nanoid() }));
+  };
 
   const onInputChange = e => {
     switch (e.target.name) {
@@ -63,8 +82,4 @@ export const ContactForm = ({ onSubmit }) => {
       </Formik>
     </>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

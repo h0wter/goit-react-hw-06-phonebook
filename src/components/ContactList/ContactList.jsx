@@ -1,27 +1,23 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { Contact } from 'components/Contact/Contact';
+import { getContacts, getFilter } from 'redux/selectors';
 
-export const ContactList = ({ contacts, onClick }) => {
+export const ContactList = () => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const filteredContacts = filter
+    ? contacts.filter(contact =>
+        contact.name.toLowerCase().includes(filter.toLowerCase())
+      )
+    : contacts;
+
   return (
     <>
       <ul>
-        {contacts.map(contact => {
-          return (
-            <Contact contact={contact} key={contact.id} onClick={onClick} />
-          );
+        {filteredContacts.map(contact => {
+          return <Contact contact={contact} key={contact.id} />;
         })}
       </ul>
     </>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  onClick: PropTypes.func.isRequired,
 };
