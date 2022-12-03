@@ -5,6 +5,14 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 
+// export const App = () => {
+//   return (
+//     <>
+//       <h1>hello</h1>
+//     </>
+//   );
+// };
+
 export const App = () => {
   return (
     <>
